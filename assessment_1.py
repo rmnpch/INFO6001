@@ -49,18 +49,17 @@ class Blockchain:
 
     def add_block(self, new_block):
         # Hint: Set the new block's previous_hash to the hash of the latest block
-        new_block.previous_hash = self.get_latest_block().hash
         self.chain.append(new_block)
         return self.chain
     
     def proof_of_work(self, block):
         # Hint: Increment the proof value until the block's hash starts with the required number of leading zeros
         block.proof = 0
-        hash = block.calculate_hash()
-        while not hash.startswith('0' * self.difficulty):
+        while not block.hash.startswith('0' * self.difficulty):
             block.proof += 1
-            hash = block.calculate_hash()
-        block.hash = hash # Update the block's hash with the valid one
+            block.hash = block.calculate_hash()
+        
+        
         return block.proof
 
     def add_data(self, data):
@@ -68,20 +67,22 @@ class Blockchain:
             index=self.get_latest_block().index+1,
             timestamp=time.time(),
             data=data,
-            previous_hash='', 
+            previous_hash=self.get_latest_block().hash, 
             proof=0
             )
+        #Hash keys same
         self.proof_of_work(new_block)
+        #Hash keys different
         self.add_block(new_block)
+        
         return new_block
         
     def is_chain_valid(self):
-        # TODO: Validate the integrity of the blockchain
         # Hint: Check that each block's hash is correct and that the previous_hash matches the hash of the previous block
         for i in range(1, len(self.chain)):
             if (self.chain[i-1].hash != self.chain[i].previous_hash):
                 return False
-            if (self.chain[i-1].hash != self.chain[i-1].calculate_hash() ): #Checks if it matched with the hashing calculation and with next item
+            if (self.chain[i].hash != self.chain[i].calculate_hash() ): #Checks if it matched with the hashing calculation and with next item
                 return False
         return True
 
