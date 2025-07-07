@@ -58,8 +58,6 @@ class Blockchain:
         while not block.hash.startswith('0' * self.difficulty):
             block.proof += 1
             block.hash = block.calculate_hash()
-        
-        
         return block.proof
 
     def add_data(self, data):
@@ -70,9 +68,7 @@ class Blockchain:
             previous_hash=self.get_latest_block().hash, 
             proof=0
             )
-        #Hash keys same
         self.proof_of_work(new_block)
-        #Hash keys different
         self.add_block(new_block)
         
         return new_block
@@ -80,9 +76,11 @@ class Blockchain:
     def is_chain_valid(self):
         # Hint: Check that each block's hash is correct and that the previous_hash matches the hash of the previous block
         for i in range(1, len(self.chain)):
-            if (self.chain[i-1].hash != self.chain[i].previous_hash):
+            if (self.chain[i-1].hash != self.chain[i].previous_hash): #Checks if previous hash matches current previous_hash
                 return False
             if (self.chain[i].hash != self.chain[i].calculate_hash() ): #Checks if it matched with the hashing calculation and with next item
+                return False
+            if (not self.chain[i].hash.startswith('0'*self.difficulty)): #Checks if difficulty parameter is met
                 return False
         return True
 
