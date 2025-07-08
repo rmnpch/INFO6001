@@ -88,13 +88,39 @@ class Blockchain:
 if __name__ == "__main__":
     blockchain = Blockchain()
 
-    print("Mining block 1...")
-    blockchain.add_data("Transaction data for Block 1")
+    # print("Mining block 1...")
+    # blockchain.add_data("Transaction data for Block 1")
 
-    print("Mining block 2...")
-    blockchain.add_data("Transaction data for Block 2")
+    # print("Mining block 2...")
+    # blockchain.add_data("Transaction data for Block 2")
 
-    print("\nBlockchain validity:", blockchain.is_chain_valid())
+    # print("\nBlockchain validity:", blockchain.is_chain_valid())
 
-    for block in blockchain.chain:
-        print(f"Block {block.index} | Hash: {block.hash} | Previous Hash: {block.previous_hash}")
+    # for block in blockchain.chain:
+    #     print(f"Block {block.index} | Hash: {block.hash} | Previous Hash: {block.previous_hash}")
+        
+#User Interaction
+print("\n=== Blockchain Menu ===")
+print("1. Add a new block")
+print("2. Display the blockchain")
+print("3. Validate the blockchain")
+print("4. Exit")
+
+selection = ''
+while (selection!='4'):
+    selection = input('Select option 1-4\n')
+
+    match selection:
+            case '1':
+                input_data = input('Insert data into new block:\n')
+                blockchain.add_data(input_data)
+            case '2':
+                for block in blockchain.chain:
+                    print(f"Block {block.index} | Hash: {block.hash} | Previous Hash: {block.previous_hash}")
+            case '3':
+                print("\nBlockchain validity:", blockchain.is_chain_valid())
+            case '4':
+                print("Exiting application.")
+            case _:  
+                print(f"Error: '{selection}' is not a valid selection. Please choose '1', '2', '3', or '4'.")
+
